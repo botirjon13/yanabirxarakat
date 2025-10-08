@@ -1,27 +1,31 @@
-#!/usr/bin/env bash
-set -e
+#!/bin/bash
+set -e  # Agar biror buyruq xato bo‘lsa — skript to‘xtaydi
+
+echo "🚀 Starting Django setup..."
+
+# 1️⃣ Migrate database
 echo "Running migrations..."
 python manage.py migrate --noinput
 
+# 2️⃣ Collect static files
 echo "Collecting static files..."
 python manage.py collectstatic --noinput
 
-# Create superuser from env if provided
-if [ -n "$ADMIN_USERNAME" ] && [ -n "$ADMIN_EMAIL" ] && [ -n "$ADMIN_PASSWORD" ]; then
-  echo "Creating superuser..."
-  python manage.py shell - <<PY
-from django.contrib.auth import get_user_model
-User = get_user_model()
-username = "$ADMIN_USERNAME"
-email = "$ADMIN_EMAIL"
-password = "$ADMIN_PASSWORD"
+# 3️⃣ Create superuser (if not exists)
+echo "Creating superuser..."
+python manage.py shell -c "
+from django.contrib.auth import get_user_model;
+User = get_user_model();
+username = 'admin';
+password = 'admin123';
+email = 'admin@example.com';
 if not User.objects.filter(username=username).exists():
-    User.objects.create_superuser(username=username, email=email, password=password)
-    print("Superuser created:", username)
+    User.objects.create_superuser(username=username, email=email, password=password);
+    print('✅ Superuser created: admin / admin123');
 else:
-    print("Superuser already exists:", username)
-PY
-fi
+    print('ℹ️ Superuser already exists.');
+"
 
-echo "Starting Gunicorn..."
-exec gunicorn kassasystem.wsgi:application --bind 0.0.0.0:$PORT --workers 3 --log-file -
+# 4️⃣ Run server
+echo "Starting Django server..."
+gunicorn kassasystem.wsgi:application --bind 0.0.0.0:8000
