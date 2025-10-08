@@ -1,4 +1,3 @@
-
 from django.test import TestCase
 from .models import Product, Sale, SaleItem
 from decimal import Decimal
