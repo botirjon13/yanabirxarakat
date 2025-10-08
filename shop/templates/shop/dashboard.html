@@ -1,6 +1,30 @@
 {% extends 'base.html' %}
 {% block title %}Dashboard{% endblock %}
 {% block content %}
-<h1>Dashboard</h1>
-<p>CRM panelga xush kelibsiz!</p>
+<h2>Dashboard</h2>
+<ul>
+  {% for p in products %}<li>{{ p.name }} — stock: {{ p.stock }} — {{ p.price }}</li>{% empty %}<li>No products</li>{% endfor %}
+</ul>
+
+<form method="post" action="{% url 'create_sale' %}">
+  {% csrf_token %}
+  <div id="rows">
+    <div>
+      <select name="product_id">
+        {% for p in products %}<option value="{{ p.id }}">{{ p.name }} ({{ p.stock }}) - {{ p.price }}</option>{% endfor %}
+      </select>
+      <input type="number" name="qty" value="1" min="1"/>
+    </div>
+  </div>
+  <button type="button" onclick="add()">+ Row</button>
+  <button type="submit">Save</button>
+</form>
+
+<script>
+function add(){
+  const div = document.createElement('div');
+  div.innerHTML = document.querySelector('#rows div').innerHTML;
+  document.getElementById('rows').appendChild(div);
+}
+</script>
 {% endblock %}
