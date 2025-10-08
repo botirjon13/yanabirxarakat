@@ -6,7 +6,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'changeme-in-production')
 DEBUG = os.environ.get('DEBUG', 'False').lower() == 'true'
 
-ALLOWED_HOSTS = ['*']  # yoki: ['zapchast-crm-production.up.railway.app', 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['zapchast-crm-production.up.railway.app', 'localhost', '127.0.0.1']  # yoki: ['zapchast-crm-production.up.railway.app', 'localhost', '127.0.0.1']
 
 CSRF_TRUSTED_ORIGINS = [
     'https://zapchast-crm-production.up.railway.app',
