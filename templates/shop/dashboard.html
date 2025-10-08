@@ -1,0 +1,69 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Dashboard - Kassa</title>
+</head>
+<body>
+  <h1>So&#39;ngi savdolar</h1>
+
+  <h2>POS - Savdo qo'shish</h2>
+  <form method="post" action="{% url 'create_sale' %}">
+    {% csrf_token %}
+    <table>
+      <thead><tr><th>Mahsulot</th><th>Miqdori</th></tr></thead>
+      <tbody id="pos-rows">
+        <tr>
+          <td>
+            <select name="product_id">
+              {% for p in products %}
+                <option value="{{ p.id }}">{{ p.name }} ({{ p.stock }}) - {{ p.price }}</option>
+              {% endfor %}
+            </select>
+          </td>
+          <td><input type="number" name="qty" value="1" min="1"/></td>
+        </tr>
+      </tbody>
+    </table>
+    <p>
+      <button type="button" onclick="addRow()">+</button>
+      <button type="submit">Savdoni saqlash</button>
+    </p>
+  </form>
+
+  <h2>So'ngi savdolar</h2>
+  <table border="1">
+    <thead>
+      <tr><th>ID</th><th>Sana</th><th>Jami</th><th>Items</th></tr>
+    </thead>
+    <tbody>
+      {% for s in sales %}
+        <tr>
+          <td>{{ s.id }}</td>
+          <td>{{ s.created_at }}</td>
+          <td>{{ s.total }}</td>
+          <td>{% for it in s.items.all %}{{ it.product.name }} x{{ it.quantity }}<br />{% endfor %}</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <p><a href="{% url 'sales_report_csv' %}">CSV hisobot</a></p>
+
+<script>
+function addRow(){
+  const tbody = document.getElementById('pos-rows');
+  const tr = document.createElement('tr');
+  tr.innerHTML = `        <td>
+      <select name="product_id">
+        {% for p in products %}
+          <option value="{{ p.id }}">{{ p.name }} ({{ p.stock }}) - {{ p.price }}</option>
+        {% endfor %}
+      </select>
+    </td>
+    <td><input type="number" name="qty" value="1" min="1"/></td>`;
+  tbody.appendChild(tr);
+}
+</script>
+</body>
+</html>
