@@ -28,4 +28,4 @@ else:
 
 # 4️⃣ Run server
 echo "Starting Django server..."
-gunicorn kassasystem.wsgi:application --bind 0.0.0.0:8000
+exec gunicorn kassasystem.wsgi:application --bind 0.0.0.0:${PORT} --workers 3 --timeout 120 --log-file -
