@@ -6,15 +6,16 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'changeme-in-production')
 DEBUG = os.environ.get('DEBUG', 'False').lower() == 'true'
 
+# ✅ Railway domainini to‘g‘ri yozish
 ALLOWED_HOSTS = [
     "zapchast-crm-production.up.railway.app",
     "127.0.0.1",
     "localhost",
-]  # yoki: ['zapchast-crm-production.up.railway.app', 'localhost', '127.0.0.1']
+]
 
+# ✅ CSRF uchun FQDN (faqat HTTPS)
 CSRF_TRUSTED_ORIGINS = [
     "https://zapchast-crm-production.up.railway.app",
-    "http://zapchast-crm-production.up.railway.app",  # ixtiyoriy
 ]
 
 INSTALLED_APPS = [
@@ -24,7 +25,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'core',  # templates shu yerdan o‘qiladi
+    'core',
     'shop',
 ]
 
@@ -43,7 +44,7 @@ ROOT_URLCONF = 'kassasystem.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'core' / 'templates'],  # ✅ bu yo‘l to‘g‘ri
+        'DIRS': [BASE_DIR / 'core' / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -58,21 +59,21 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'kassasystem.wsgi.application'
 
-# Database (Railway avtomatik DATABASE_URL orqali beradi)
+# ✅ Railway Postgres avtomatik ulanmasa, lokal uchun sqlite
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',  # Agar Railway Postgres ishlatmasa
+        'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
 
-# Static files
+# ✅ Statik fayllar
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# Language and timezone
+# ✅ Til va vaqt
 LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'UTC'
 USE_I18N = True
