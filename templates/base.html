@@ -1,0 +1,27 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>{% block title %}CRM{% endblock %}</title>
+  {% load static %}
+  <link rel="icon" href="{% static 'favicon.ico' %}">
+</head>
+<body>
+  <header>
+    <h1>Zapchast CRM</h1>
+    <nav>
+      <a href="/">Dashboard</a> | <a href="/admin/">Admin</a>
+    </nav>
+    <hr>
+  </header>
+
+  <main>
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer>
+    <hr>
+    <p>&copy; Zapchast CRM</p>
+  </footer>
+</body>
+</html>
